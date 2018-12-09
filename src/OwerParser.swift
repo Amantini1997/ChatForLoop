@@ -176,7 +176,7 @@ class IOU{
     }
 
     func getMyOwes()-> Array<(String,String,String,String)>{
-        return getter(ower:"I")
+        return getter(ower:"i")
     }
 
     func getYourOwes()-> Array<(String,String,String,String)>{
