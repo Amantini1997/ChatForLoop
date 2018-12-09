@@ -2,7 +2,18 @@ import Foundation
 import Glibc
 
 class OwerParser{
-
+    let converte = ["zero":0,
+                    "one":1,
+                    "two":2,
+                    "three":3,
+                    "four":4,
+                    "five":5,
+                    "six":6,
+                    "seven":7,
+                    "eight":8,
+                    "nine":9,
+                    "ten":10]
+    var flag:Bool
     var quantity:Int
     var dQuantity:Double
     var object:String
@@ -21,11 +32,15 @@ class OwerParser{
         ower = ""
         receiver = ""
         receivable = ""
-        owePos = 0;
-        atPos = 0;
+        owePos = 0
+        atPos = 0
+        flag = false
     }
 
     func parse(x: String){
+        quantity = 0
+        dQuantity = -1.0
+        flag = false
         var arr = x.components(separatedBy:" ")
         if x.contains(" @"){
             if x.contains(" owe ") || x.contains(" ought "){
@@ -64,7 +79,6 @@ class OwerParser{
         }else{
             return//print("NOT VALID")//replace
         }
-
         if ower != "" {
             for i in 0..<arr.count{
                 var temp = arr[i]
@@ -76,31 +90,39 @@ class OwerParser{
                     receivable = String(temp.characters.suffix(temp.count-1))
                     if temp.last != "s"{
                         quantity = 1
+                        flag = true
                     }
                     continue
                 }
             }
         }
-        if dQuantity == -1.0{
+        if !flag{
             for i in owePos...atPos{
                 let word = arr[i].lowercased()
                 if word.contains("couple") || word.contains("pair"){
                     quantity = 2
+                    flag = true
                     continue
                 }else if word == "an"{
                     quantity = 1
+                    flag = true
                     continue
                 }else if word.contains("."){
-                    dQuantity = Double(arr[atPos-1] as String) ?? -1.0
+                    let number = Double(arr[atPos-1] as String)
+                    if number != nil {
+                        dQuantity = number!
+                        flag = true
+                    }
                     continue
-                }/*else if condition {
-                    let number = NumberFormatter.number(from: word)
-                    quantity = number.integerValue ?? 0
+                }else if Array(converte.keys).contains(word) {
+                    quantity = converte[word]!
+                    flag = true
                     continue
-                }*/else{
+                }else{
                     let num = Int(word)
                     if num != nil {
                         quantity = num!
+                        flag = true
                     }
                     continue
                 }
@@ -108,14 +130,20 @@ class OwerParser{
         }
         let stringQuantity = (dQuantity < Double(quantity)) ? String(quantity) : String(dQuantity)
         //print("\(ower) owe \(receiver) \(stringQuantity) \(receivable)")
-        iou.add(x:(ower,receiver,receivable,stringQuantity))
+        if flag{
+            iou.add(x:(ower,receiver,receivable,stringQuantity))
+        }
     }
 
     func getAllIous(){
         for i in iou.getAll(){
-            print(i)
+            print("\(firstUppercased(s:i.0)) owe \(i.1) \(i.3) \(i.2)")
         }
     }
+}
+
+func firstUppercased(s:String) -> String {
+    return s == "i" ? "I" : "You"
 }
 
 class IOU{
@@ -189,11 +217,8 @@ class IOU{
 }
 
 
-/*var parser = OwerParser()
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 1 fucking @pounds??")
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")
-parser.parse(x:"Hello mother fucker, do you remember that I owe I 2 fucking @pounds??")
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")
-parser.getAllIous()*/
+var parser = OwerParser()
+parser.parse(x:"I owe you three @pounds")
+parser.getAllIous()
+parser.parse(x:"You owe me 4 @pounds")
+parser.getAllIous()
