@@ -1,6 +1,24 @@
 import Foundation
 import Glibc
 
+class EventParser{
+    let kwevent = ["organize","organise","meet","party","event"]
+    var events:Array<(String,String,String)>//date,time,place
+
+    init(){
+        events = Array<(String,String,String)>()
+    }
+
+    func parse(s:String){
+        var arr = s.components(separatedBy:" ")
+        for kword in kwevent{
+            if arr.contains(kword){
+                print("EVENT")
+            }
+        }
+    }
+}
+
 class OwerParser{
     let converte = ["zero":0,
                     "one":1,
@@ -23,9 +41,11 @@ class OwerParser{
     var owePos:Int
     var atPos:Int
     var iou:IOU
+    var eventParser:EventParser
 
     init(){
         iou = IOU()
+        eventParser = EventParser()
         quantity = 0
         dQuantity = -1.0
         object = ""
@@ -133,6 +153,8 @@ class OwerParser{
         if flag{
             iou.add(x:(ower,receiver,receivable,stringQuantity))
         }
+
+        eventParser.parse(s:x)
     }
 
     func getAllIous(){
@@ -185,7 +207,6 @@ class IOU{
         let delta = mine - yours
         let receivables = ious[i].2
         ious.remove(at:i)
-        print(delta)
         if delta>0 {
             ious.append(("you","me",receivables,String(delta)))
         }else if delta<0{
@@ -218,7 +239,26 @@ class IOU{
 
 
 var parser = OwerParser()
-parser.parse(x:"I owe you three @pounds")
+parser.parse(x:"I owe you three @pounds, with them we should organize a super party")
 parser.getAllIous()
 parser.parse(x:"You owe me 4 @pounds")
 parser.getAllIous()
+
+
+/*
+    let days = ["today","tomorrow","tonite","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+    let months = ["january","febraury","march","april","may","june","july","august","september","october","december"]
+    let kwevent = ["organize","organise","meet"]
+    let date = ["first":1,"second":2,"third":3]
+    var events:Array<(String,String,String)>//date,time,place
+    init(){
+        events = Array<(String,String,String)>()
+    }
+    func parse(s:String){
+        var arr = s.components(separatedBy:" ")
+        for kword in kwevent{
+            if arr.contains(kword){
+                print("EVENT")
+            }
+        }
+    }*/
