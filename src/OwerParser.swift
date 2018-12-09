@@ -2,20 +2,88 @@ import Foundation
 import Glibc
 
 class EventParser{
-    let kwevent = ["organize","organise","meet","party","event"]
-    var events:Array<(String,String,String)>//date,time,place
+    let days = ["today","tomorrow","tonite"]
+    let weekdays = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+    let months = ["january","febraury","march","april","may","june","july","august","september","october","december"]
+    let kwevents = ["organize","organise","meet","party","event"]
+    let date = ["first":1,"second":2,"third":3, "1st":1,"2nd":2,"3rd":3,"4th":4,"5th":5,"6th":6,"7th":7,"8th":8,"9th":9,"th":-1,"21st":21,"22nd":22,"23rd":23,"31st":31]
+    var events:Array<(String,String)>//day,month
 
     init(){
-        events = Array<(String,String,String)>()
+        events = Array<(String,String)>()
     }
 
     func parse(s:String){
-        var arr = s.components(separatedBy:" ")
-        for kword in kwevent{
-            if arr.contains(kword){
-                print("EVENT")
+        var month = ""
+        var formalDay = ""
+        let arrs = s.components(separatedBy:" ")
+        var arr = [String]()
+        for words in arrs{
+            var word = words
+            while [",",";",":",".","?","!"].contains(word.last!){
+                        word = String(word.dropLast())
+                    }
+            arr.append(word)
+        }
+        var eventFlag = false
+        for words in arr{
+            let word = words.lowercased()
+            if days.contains(word){
+                askForEvent(d:word,m:"")
+                return
             }
         }
+        for words in arr{
+            let word = words.lowercased()
+            if weekdays.contains(word){
+                formalDay = word
+                eventFlag = true
+            }
+        }
+        if(formalDay==""){
+            for words in arr{
+                let word = words.lowercased()
+                let suf = word.suffix(2)
+                if ["st","nd","rd","th"].contains(suf){
+                   let head = String(word.prefix(1))
+                   if !"0123456789".contains(head){
+                        continue
+                    }else{
+                        let scnd = String(word.prefix(2).suffix(1))
+                        if "0123456789".contains(scnd){
+                               formalDay = String(head) + String(scnd)
+                               eventFlag = true
+                               continue
+                           }else{
+                               formalDay = String(head)
+                               eventFlag = true
+                               continue
+                           }
+                    }
+
+                }
+            }
+        }
+        for words in arr{
+            let word = words.lowercased()
+            if(months.contains(word)){
+                month = word
+                eventFlag = true
+                continue
+            }
+        }
+        for word in arr{
+            if kwevents.contains(word.lowercased()){
+                askForEvent(d:formalDay,m:month)
+            }
+        }
+        if eventFlag{
+            askForEvent(d:formalDay,m:month)
+        }
+    }
+
+    func askForEvent(d:String,m:String){
+        print("How about an event \(d)\(m)?")
     }
 }
 
@@ -94,9 +162,11 @@ class OwerParser{
                     ower = "i"
                 }
             }else{
+            eventParser.parse(s:x)
                 return//print("NOT VALID")//replace
             }
         }else{
+            eventParser.parse(s:x)
             return//print("NOT VALID")//replace
         }
         if ower != "" {
@@ -239,10 +309,7 @@ class IOU{
 
 
 var parser = OwerParser()
-parser.parse(x:"I owe you three @pounds, with them we should organize a super party")
-parser.getAllIous()
-parser.parse(x:"You owe me 4 @pounds")
-parser.getAllIous()
+parser.parse(x:"are you free this weekend from 6 to 8, October coming soooooon")
 
 
 /*
