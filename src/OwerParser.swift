@@ -91,7 +91,7 @@ class OwerParser{
                 }else if word.contains("."){
                     dQuantity = Double(arr[atPos-1] as String) ?? -1.0
                     continue
-                }/*else if(true){
+                }/*else if condition {
                     let number = NumberFormatter.number(from: word)
                     quantity = number.integerValue ?? 0
                     continue
@@ -105,10 +105,11 @@ class OwerParser{
             }
         }
         let stringQuantity = (dQuantity < Double(quantity)) ? String(quantity) : String(dQuantity)
-        print("\(ower) owe \(receiver) \(stringQuantity) \(receivable)")
+        //print("\(ower) owe \(receiver) \(stringQuantity) \(receivable)")
         return(ower,receiver,receivable,stringQuantity)
     }
 }
 
+/*
 var parser = OwerParser()
-parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")
+parser.parse(x:"Hello mother fucker, do you remember that you owe me 2 fucking @pounds??")*/
