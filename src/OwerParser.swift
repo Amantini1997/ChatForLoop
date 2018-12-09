@@ -229,8 +229,10 @@ class OwerParser{
 
     func getAllIous(){
         for i in iou.getAll(){
+    print("Hello")
             print("\(firstUppercased(s:i.0)) owe \(i.1) \(i.3) \(i.2)")
         }
+
     }
 }
 
@@ -310,6 +312,11 @@ class IOU{
 
 var parser = OwerParser()
 parser.parse(x:"are you free this weekend from 6 to 8, October coming soooooon")
+parser.parse(x:"i owe u 7 @£")
+parser.parse(x:"I o u 7 @£")
+parser.parse(x:"I o u 7 @£")
+parser.parse(x:"I o u 7 @£")
+parser.getAllIous()
 
 
 /*
