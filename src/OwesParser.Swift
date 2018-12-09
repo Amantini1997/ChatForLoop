@@ -185,7 +185,6 @@ class IOU{
         let delta = mine - yours
         let receivables = ious[i].2
         ious.remove(at:i)
-        print(delta)
         if delta>0 {
             ious.append(("you","me",receivables,String(delta)))
         }else if delta<0{
