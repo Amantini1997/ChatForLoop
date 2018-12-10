@@ -8,11 +8,11 @@ class EventParser{
     let kwevents = ["organize","organise","meet","party","event"]
     let date = ["first":1,"second":2,"third":3, "1st":1,"2nd":2,"3rd":3,"4th":4,"5th":5,"6th":6,"7th":7,"8th":8,"9th":9,"th":-1,"21st":21,"22nd":22,"23rd":23,"31st":31]
     var events:Array<(String,String)>//day,month
-    
+
     init(){
         events = Array<(String,String)>()
     }
-    
+
     func parse(s:String){
         var month = ""
         var formalDay = ""
@@ -60,7 +60,7 @@ class EventParser{
                                continue
                            }
                     }
-                   
+
                 }
             }
         }
@@ -81,7 +81,7 @@ class EventParser{
             askForEvent(d:formalDay,m:month)
         }
     }
-    
+
     func askForEvent(d:String,m:String){
         print("How about an event \(d)\(m)?")
     }
@@ -223,7 +223,7 @@ class OwerParser{
         if flag{
             iou.add(x:(ower,receiver,receivable,stringQuantity))
         }
-        
+
         eventParser.parse(s:x)
     }
 
@@ -232,7 +232,7 @@ class OwerParser{
     print("Hello")
             print("\(firstUppercased(s:i.0)) owe \(i.1) \(i.3) \(i.2)")
         }
-        
+
     }
 }
 
@@ -313,6 +313,4 @@ class IOU{
 var parser = OwerParser()
 parser.parse(x:"are you free this weekend from 6 to 8, October coming soooooon")
 parser.parse(x:"What are you doing the 17th?")
-parser.parse(x:"It's been 7 weeks since last time I went to a party")
-
-
+parser.parse(x:"It's been 7 weeks since last time I went to a party")*/

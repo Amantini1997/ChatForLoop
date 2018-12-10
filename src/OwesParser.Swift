@@ -218,6 +218,11 @@ class IOU{
 
 var parser = OwerParser()
 parser.parse(x:"I owe you three @pounds")
-parser.getAllIous()
+//parser.getAllIous()
+parser.parse(x:"You owe me seven @bears")
+//parser.getAllIous()
+parser.parse(x:"you owe me one more @bear")
 parser.parse(x:"You owe me 4 @pounds")
+//parser.getAllIous()
+parser.parse(x:"U o me four @pounds")
 parser.getAllIous()
